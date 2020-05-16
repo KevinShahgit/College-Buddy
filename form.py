@@ -8,9 +8,9 @@ class SignupForm(FlaskForm):
                        validators=[DataRequired()])
     lname = StringField('Last Name', validators = [DataRequired()])
     roll = IntegerField('Roll Number', validators = [DataRequired()])
-    year = SelectField('Year of Study', choices = [("SY", "S.Y."), ('text', 'Plain Text')])
-    branch = SelectField('Branch', choices = [("Comps", "Computer Engineering"), ('text', 'Plain Text')])
-    division = SelectField('Division', choices = [("A"), ("B"), ('text', 'Plain Text')])
+    year = SelectField('Year of Study', choices = [("SY", "Second Year")])
+    branch = SelectField('Branch', choices = [("Comps", "Computer Engineering")])
+    division = SelectField('Division', choices = [("A", 'A'),  ("B", 'B')])
     id = StringField('Email(A code will be sent to this email for verification)',
                         validators=[Length(min = 6),
                                     Email(message='Enter a valid email.'),
@@ -31,4 +31,5 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
     
 class CodeForm(FlaskForm):
-    code = IntegerField('Code(that was sent to your email', validators = [DataRequired()])
+    code = IntegerField('Code(that was sent to your email)', validators = [DataRequired()])
+    submit = SubmitField('Submit')
