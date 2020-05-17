@@ -128,48 +128,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="succes">
-                  <td>AOA</td>
-                  <td>8</td>
-                  <td>2</td>
-                  <td>10</td>
-                  <td>80</td>
-                </tr>
-                <tr class="success">
-                  <td>OSPTL</td>
-                  <td>8</td>
-                  <td>2</td>
-                  <td>10</td>
-                  <td>80</td>
-                </tr>
-                <tr class="danger">
-                  <td>PSOT</td>
-                  <td>4</td>
-                  <td>6</td>
-                  <td>10</td>
-                  <td>40</td>
-                </tr>
-                <tr class="success">
-                  <td>MiP</td>
-                  <td>9</td>
-                  <td>1</td>
-                  <td>10</td>
-                  <td>90</td>
-                </tr>
-                <tr class="warning">
-                  <td>RDBMS</td>
-                  <td>7</td>
-                  <td>3</td>
-                  <td>10</td>
-                  <td>70</td>
-                </tr>
-                <tr class="danger">
-                  <td>DS</td>
-                  <td>5</td>
-                  <td>5</td>
-                  <td>10</td>
-                  <td>50</td>
-                </tr>
+                {% for i in range(data | length) %}
+                  {% if i % 2 == 0 %}
+                    <tr class="succes">
+                      {% for j in data[i] %}
+                        <td>{{ j }}</td>
+                      {% endfor %}
+                    </tr>
+                  {% else %}
+                    <tr class="danger">
+                      {% for j in data[i] %}
+                        <td>{{ j }}</td>
+                      {% endfor %}
+                    </tr>
+                  {% endif %}
+                {% endfor %}
               </tbody>
             </table>
           </div>

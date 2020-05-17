@@ -101,6 +101,8 @@ def verify(s):
 @app.route('/stuhome', methods = ["GET", "POST"])
 @login_required
 def stuhome():
+    if current_user.type == 'T':
+        return redirect(url_for('profhome'))
     i = stu.find_one({"_id": current_user.id})
     j = misc.find_one({"_id": i.get("division")})
     #[subject, attended, missed, total, percentage]
@@ -111,14 +113,15 @@ def stuhome():
         l1 = []
         l1.append(k[0])
         z = i.get(k[0])
-        l1.append(z.count(1))
-        l1.append(z.count(0))
-        l1.append(k[1])
+        l1.append(z.count('1'))
+        l1.append(z.count('0'))
+        l1.append(int(k[1]))
         if(l1[-1] == 0):
-            l1.append(0)
+            l1.append('0%')
         else:
-            l1.append(round((l1[1] / l1[-1]) * 100), 2)
-        l.append(l1)        
+            l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + "%")
+        l.append(l1)
+        print(l)
     return render_template('attendance.html', data = l)
     
 @app.route('/profhome', methods = ["GET", "POST"])
