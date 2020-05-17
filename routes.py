@@ -119,14 +119,37 @@ def stuhome():
         else:
             l1.append(round((l1[1] / l1[-1]) * 100), 2)
         l.append(l1)        
-    return render_template('attendance.html', data = 1)
+    return render_template('attendance.html', data = l)
     
-@app.route('/satt', methods = ["GET", "POST"])
+@app.route('/profhome', methods = ["GET", "POST"])
+@login_required
+def profhome():
+    if current_user.type == "S":
+        return redirect(url_for("stuhome"))
+    return render_template('prof.html')
+    
+@app.route('/feedback', methods = ["GET", "POST"])
+@login_required
+def feedback():
+    return render_template('feedback.html')
+    
+   
+@app.route("/timetable", methods = ["GET", "POST"])
+@login_required
+def timetable():
+    if current_user.type == 'T':
+        return redirect(url_for('profhome'))
+    temp = stu.find_one({"_id" : current_user.id})
+    branch = temp.get("branch")
+    division = temp.get("division")
+    return render_template('time-table.html', d = division, b = branch)
+    
+@app.route('/stuatt', methods = ["GET", "POST"])
 @login_required
 def attend():
     pass
 
-@app.route('/tatt', methods = ["GET", "POST"]) 
+@app.route('/profatt', methods = ["GET", "POST"]) 
 @login_required
 def tatt():
     pass
