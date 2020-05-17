@@ -1785,14 +1785,14 @@ fieldset[disabled] .form-control {
 
 .table>thead>tr>th {
     border-bottom-width: 1px;
-    font-size: 12px;
+    font-size: 15px;
     text-transform: uppercase;
     color: #9A9A9A;
     font-weight: 400;
     padding-bottom: 5px;
     border-top: none !important;
     border-bottom: none;
-    text-align: left !important;
+    text-align: center !important;
 }
 
 .table .td-actions .btn {
