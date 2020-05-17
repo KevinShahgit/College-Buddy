@@ -1,9 +1,9 @@
 from app import app, login, stu, teach, misc
 from app.users import User
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app.form import SignupForm, LoginForm, CodeForm
 from flask import url_for, redirect, flash, render_template, get_flashed_messages, request
-import math, random, requests, json, jsonify, bcrypt
+import math, random, requests, json, jsonify, datetime, bson.objectid
 
 def generateOTP() :   # 4 digit OTP
     digits = "0123456789"
@@ -25,7 +25,7 @@ def logview():
         user = teach.find_one({"_id": l1.id.data})
         if user is not None and l1.password.data == user.get("pword"):
             t = User(id = user.get("_id"), password = user.get("pword"), type = "T")
-            login_user(t)
+            login_user(t, duration=datetime.timedelta(hours=1))
             return redirect(url_for('profhome'))
         elif user is not None:
             flash('Invalid username/password combination.')
@@ -33,7 +33,7 @@ def logview():
             user = stu.find_one({"_id": l1.id.data})
             if user is not None and l1.password.data == user.get("pword"):
                 t = User(id = user.get("_id"), password = user.get("pword"), type = "S")
-                login_user(t)
+                login_user(t, duration=datetime.timedelta(hours=1))
                 return redirect(url_for('stuhome'))
             else:
                 flash('Invalid username/password combination.')
@@ -55,7 +55,7 @@ def sign():
                 c = generateOTP()
                 requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":1,"email": s1.id.data,"code": c}),headers={'Content-Type': 'application/json'})
                 temp = {
-                    '_id' : s1.id.data,
+                    'email' : s1.id.data,
                     'name' : s1.fname.data + " " + s1.lname.data,
                     'pword' : s1.password.data,
                     'roll' : s1.roll.data,
@@ -69,10 +69,10 @@ def sign():
                     'OSTPL' : [],
                     "code" : c
                 }
-                misc.insert_one(temp)
-                return redirect("http://localhost:5000/verify/" + s1.id.data)
-            flash('A user already exists with that email address.')
-        flash('A user already exists with that email address.')
+                x = misc.insert_one(temp)
+                return redirect("http://localhost:5000/verify/" + str(x.inserted_id))
+            # flash('A user already exists with that email address')
+        flash('A user already exists with that email address')
     return render_template('signup.html',
                            title = 'Create an Account.',
                            form = s1,
@@ -82,15 +82,16 @@ def sign():
 @app.route('/verify/<s>', methods=["GET", "POST"])
 def verify(s):
     s2  = CodeForm()
-    temp = misc.find_one({"_id" : s})
+    temp = misc.find_one({"_id" : bson.objectid.ObjectId(s)})
     if s2.validate_on_submit():
-        print(temp.get("code"))
         if temp.get("code") == s2.code.data:
             temp.pop("code")
+            x = temp.pop("email")
+            temp["_id"] = x
             stu.insert_one(temp)
-            misc.delete_one({'_id': s})
+            misc.delete_one({'_id': bson.objectid.ObjectId(s)})
             user = User(id = temp.get("_id"), password = temp.get("pword"), type = 'S')
-            login_user(user)
+            login_user(user, duration=datetime.timedelta(hours=1))
             return redirect(url_for("stuhome"))
         flash("Incorrect code entered")
     return render_template('check.html', title = 'Email Verification', form = s2, template = 'signup-page', body = 'Verify your email.')    
@@ -98,10 +99,39 @@ def verify(s):
 
 
 @app.route('/stuhome', methods = ["GET", "POST"])
+@login_required
 def stuhome():
+    i = stu.find_one({"_id": current_user.id})
+    j = misc.find_one({"_id": i.get("division")})
+    #[subject, attended, missed, total, percentage]
+    l = []
+    for k in j.items():
+        if(k[0] == "_id"):
+            continue
+        l1 = []
+        l1.append(k[0])
+        z = i.get(k[0])
+        l1.append(z.count(1))
+        l1.append(z.count(0))
+        l1.append(k[1])
+        if(l1[-1] == 0):
+            l1.append(0)
+        else:
+            l1.append(round((l1[1] / l1[-1]) * 100), 2)
+        l.append(l1)        
+    return render_template('attendance.html', data = 1)
     
-    return render_template('attendance.html')
-  
+@app.route('/satt', methods = ["GET", "POST"])
+@login_required
+def attend():
+    pass
+
+@app.route('/tatt', methods = ["GET", "POST"]) 
+@login_required
+def tatt():
+    pass
+    
+
 @login.user_loader
 def load_user(id):
     a = teach.find_one({"_id" : id})
@@ -110,3 +140,9 @@ def load_user(id):
     else:
         a = stu.find_one({"_id" : id})
         return User(id = a.get("_id"), password = a.get("pword"), type = "S")
+        
+@app.route('/logout', methods = ["GET", "POST"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("logview"))
