@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
+import bson.objectid
 
 
 class SignupForm(FlaskForm):
@@ -33,3 +34,16 @@ class LoginForm(FlaskForm):
 class CodeForm(FlaskForm):
     code = IntegerField('Code(that was sent to your email)', validators = [DataRequired()])
     submit = SubmitField('Submit')
+    
+class Feedback(FlaskForm):
+    name = SelectField('Select faculty', choices=[], coerce=str)
+    subject = StringField('Subject of email(feedback)', validators=[DataRequired()])
+    message = TextAreaField('Feedback message', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+    
+class Teacher(FlaskForm):
+    subject = SelectField('Select subject', choices=[], validators=[DataRequired()])
+    year = SelectField('Select year', choices=[("SY", "SY")], validators=[DataRequired()])
+    branch = SelectField('Select branch', choices=[("Comps", "COMP")], validators=[DataRequired()])
+    division = SelectField('Select division', choices=[("A", "A"), ("B", "B")], validators=[DataRequired()])
+    submit = SubmitField('Get OTP')

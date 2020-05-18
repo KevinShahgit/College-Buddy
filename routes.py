@@ -1,9 +1,10 @@
 from app import app, login, stu, teach, misc
 from app.users import User
 from flask_login import current_user, login_user, logout_user, login_required
-from app.form import SignupForm, LoginForm, CodeForm
+from app.form import SignupForm, LoginForm, CodeForm, Feedback, Teacher
 from flask import url_for, redirect, flash, render_template, get_flashed_messages, request
-import math, random, requests, json, jsonify, datetime, bson.objectid
+from datetime import datetime,date
+import math, random, requests, json, jsonify, datetime, bson.objectid, time
 
 def generateOTP() :   # 4 digit OTP
     digits = "0123456789"
@@ -121,7 +122,6 @@ def stuhome():
         else:
             l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + "%")
         l.append(l1)
-        print(l)
     return render_template('attendance.html', data = l)
     
 @app.route('/profhome', methods = ["GET", "POST"])
@@ -129,12 +129,30 @@ def stuhome():
 def profhome():
     if current_user.type == "S":
         return redirect(url_for("stuhome"))
-    return render_template('prof.html')
+    temp = teach.find_one({"_id" : current_user.id})
+    subjects = temp.get("subjects")
+    today = date.today()
+    today_date = today.strftime("%d-%m-%Y")
+    form = Teacher()
+    form.subject.choices = subjects
+    if form.validate_on_submit():
+        return #post request goes here
+    return render_template('prof.html', form = form, dt = today_date)
     
+   
 @app.route('/feedback', methods = ["GET", "POST"])
 @login_required
 def feedback():
-    return render_template('feedback.html')
+    f = Feedback()
+    l = []
+    for i in teach.find({}):
+        j = (i.get("_id"), i.get("name") + " - " + i.get("_id"))
+        l.append(j)
+    f.name.choices = l
+    if f.validate_on_submit():
+        requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":2,"email": f.name.data,"subject": f.subject.data, "message": f.message.data}),headers={'Content-Type': 'application/json'})
+        return redirect(url_for('feedback'))
+    return render_template('feedback.html', form = f)
     
    
 @app.route("/timetable", methods = ["GET", "POST"])

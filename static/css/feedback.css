@@ -4,11 +4,32 @@ html {
   overflow-x: hidden;
 }
 
+h1{
+  color: black;
+  font-weight: lighter;
+  margin: 5px;
+  text-align: center;
+}
+
+label{
+  color: black !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  margin-top: 15px !important;
+  margin-bottom: 0px !important;
+}
+
+#name, #subject, #message{
+  font-weight: 100;
+  margin-bottom: 20px !important;
+  
+}
+
+
 h2 {
-  margin: 0;
-  color: #8495a5;
+  color: black;
   font-size: 2.5em;
-  font-weight: 300;
+  font-weight: 300 !important;
 }
 
 #contact-form {
@@ -55,12 +76,12 @@ textarea {
 }
 
 input[type="submit"], button {
-  background: #9669d6;
-  color: #f7f7f8;
+  background: grey;
+  color: white;
 }
 
 input[type="submit"]:hover, button:hover {
-  background: #ffffff;
+  background: black;
 }
 
 @media screen and (min-width: 30em) {
@@ -78,14 +99,26 @@ input[type="submit"]:hover, button:hover {
     text-align: right;
   }
   input, textarea, button {
-    width: 73.6263%;
-    line-height: 1.5;
+    line-height: 1;
   }
   textarea {
     height: 10em;
+    width: 30em;
   }
-  input[type="submit"], button {
-    margin-left: 26.3736%;
+}
+
+.errors {
+  margin-top: -11px;
+  margin-bottom: 1rem;
+  list-style: none;
+  padding: 0;
+  font-size: .9em;
+  color: #b75353
+}
+
+@media sreen and (max-width: 400px) {
+  #name, #subject, #message {
+    align-self: center;
   }
 }
 

@@ -111,17 +111,50 @@
                   <div class="card-header">
                   </div>
                   <div class="card-body">
-                    <form>
                       <section id="contact-form">
-                        <h2>Feedback</h2>
-                        <form id="contact" name="contact" accept-charset="utf-8">
-                          <label><span>Name</span><input name="name" type="text" placeholder="Name"/></label>
-                          <label><span>Email</span><input name="email" type="email" placeholder="Email"/></label>
-                          <label><span>Message</span><textarea name="message" placeholder="Message"></textarea></label>
-                          <input name="submit" type="submit" value="Send"/>
-                        </form>
+                        <h1>Feedback</h1>
+                        <div class="container">
+                          <form method="POST" action="/feedback">
+                            {{ form.csrf_token}}
+                            <fieldset class="name" style="font-size:18px; font-weight:100">
+                              {{ form.name.label }}
+                              {{ form.name }}
+                              {% if form.name.errors %}
+                              <ul class="errors">
+                                {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <fieldset class="subject" style="font-size:18px; font-weight:100">
+                              {{ form.subject.label }}
+                              {{ form.subject(placeholder="Subject of the email") }}
+                              {% if form.subject.errors %}
+                              <ul class="errors">
+                                {% for error in form.subject.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <fieldset class="subject" style="font-size:18px; font-weight:100">
+                              {{ form.message.label }}
+                              {{ form.message(placeholder="lname of the email") }}
+                              {% if form.message.errors %}
+                              <ul class="errors">
+                                {% for error in form.message.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <div class="submit-button">
+                              {{ form.submit }}
+                            </div>
+                          </form>
+                        </div>
                       </section>
-                    </form>
                   </div>
                 </div>
               </div>
@@ -139,7 +172,6 @@
     src="../static/js/core/jquery.3.2.1.min.js"
     type="text/javascript"
   ></script>
-  <script src="../static/js/feedback.js " type="text/javascript"></script>
   <script src="../static/js/core/popper.min.js" type="text/javascript"></script>
   <script
     src="../static/js/core/bootstrap.min.js"

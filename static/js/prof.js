@@ -1,59 +1,46 @@
-var maxHeight = 400;
+// Inspiration: https://tympanus.net/codrops/2012/10/04/custom-drop-down-list-styling/
 
-$(function(){
+function DropDown(el) {
+    this.dd = el;
+    this.placeholder = this.dd.children('span');
+    this.opts = this.dd.find('ul.drop li');
+    this.val = '';
+    this.index = -1;
+    this.initEvents();
+}
 
-    $(".dropdown > li").hover(function() {
-    
-         var $container = $(this),
-             $list = $container.find("ul"),
-             $anchor = $container.find("a"),
-             height = $list.height() * 1.1,       // make sure there is enough room at the bottom
-             multiplier = height / maxHeight;     // needs to move faster if list is taller
-        
-        // need to save height here so it can revert on mouseout            
-        $container.data("origHeight", $container.height());
-        
-        // so it can retain it's rollover color all the while the dropdown is open
-        $anchor.addClass("hover");
-        
-        // make sure dropdown appears directly below parent list item    
-        $list
-            .show()
-            .css({
-                paddingTop: $container.data("origHeight")
-            });
-        
-        // don't do any animation if list shorter than max
-        if (multiplier > 1) {
-            $container
-                .css({
-                    height: maxHeight,
-                    overflow: "hidden"
-                })
-                .mousemove(function(e) {
-                    var offset = $container.offset();
-                    var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
-                    if (relativeY > $container.data("origHeight")) {
-                        $list.css("top", -relativeY + $container.data("origHeight"));
-                    };
-                });
-        }
-        
-    }, function() {
-    
-        var $el = $(this);
-        
-        // put things back to normal
-        $el
-            .height($(this).data("origHeight"))
-            .find("ul")
-            .css({ top: 0 })
-            .hide()
-            .end()
-            .find("a")
-            .removeClass("hover");
-    
-    });  
-    
-});
+DropDown.prototype = {
+    initEvents: function () {
+        var obj = this;
+        obj.dd.on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).toggleClass('active');
+        });
+        obj.opts.on('click', function () {
+            var opt = $(this);
+            obj.val = opt.text();
+            obj.index = opt.index();
+            obj.placeholder.text(obj.val);
+            opt.siblings().removeClass('selected');
+            opt.filter(':contains("' + obj.val + '")').addClass('selected');
+            console.log(obj.val)            
+        }).change();
+    },
+    getValue: function () {
+        return this.val;
+    },
+    getIndex: function () {
+        return this.index;
+    }
+};
 
+$(function () {
+    // create new variable for each menu
+    var dd1 = new DropDown($('#noble-gases'));
+    // var dd2 = new DropDown($('#other-gases'));
+    $(document).click(function () {
+        // close menu on document click
+        $('.wrap-drop').removeClass('active');
+    });
+}); 

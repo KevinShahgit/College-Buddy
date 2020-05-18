@@ -65,11 +65,18 @@
           </div>
           <ul class="nav">
             <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('profhome') }}">
+                <i class="nc-icon nc-chart-pie-35"></i> 
+                <p>Get OTP</p>
+              </a>
+            </li>
+            <li class="nav-item active">
               <a class="nav-link" href="attendance.html">
                 <i class="nc-icon nc-chart-pie-35"></i> 
                 <p>Notification</p>
               </a>
             </li>
+            
             
           </ul>
         </div>
@@ -101,46 +108,60 @@
         <!-- End Navbar -->
         <div class="content">
             <nav>
-                <ul class="dropdown">
-                    <li class="drop"><a href="#">Subject</a>
-                        <ul class="sub_menu">
-                            <li><a href="#">AOA</a></li>
-                            <li><a href="#">PSOT</a></li>
-                            <li><a href="#">OSTPL</a></li>
-                            <li><a href="#">RDBMS</a></li>
-                            <li><a href="#">TACD</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="dropdown">
-                  <li class="drop"><a href="#">Year</a>
-                      <ul class="sub_menu">
-                          <li><a href="#">SY</a></li>
-                      </ul>
-                  </li>
-                </ul>
-                <ul class="dropdown">
-                  <li class="drop"><a href="#">Branch</a>
-                      <ul class="sub_menu">
-                          <li><a href="#">COMP</a></li>
-                      </ul>
-                  </li>
-              </ul>
-            <ul class="dropdown">
-              <li class="drop"><a href="#">Division</a>
-                  <ul class="sub_menu">
-                      <li><a href="#">A</a></li>
-                      <li><a href="#">B</a></li>
+              <form id="contact" name="contact" method="POST" action="/">
+                {{ form.csrf_token}}
+                <fieldset class="subject">
+                  {{ form.subject.label }}
+                  {{ form.subject(placeholder = "Select Subject") }}
+                  {% if form.subject.errors %}
+                  <ul class="errors">
+                    {% for error in form.subject.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
                   </ul>
-              </li>
-          </ul>
+                  {% endif %}
+                </fieldset>
+                <fieldset class="year">
+                  {{ form.year.label }}
+                  {{ form.year(placeholder = "Select Year") }}
+                  {% if form.year.errors %}
+                  <ul class="errors">
+                    {% for error in form.year.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </fieldset>
+                <fieldset class="branch">
+                  {{ form.branch.label }}
+                  {{ form.branch(placeholder = "Select Branch") }}
+                  {% if form.branch.errors %}
+                  <ul class="errors">
+                    {% for error in form.branch.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </fieldset>
+                <fieldset class="division">
+                  {{ form.division.label }}
+                  {{ form.division(placeholder = "Select Division") }}
+                  {% if form.division.errors %}
+                  <ul class="errors">
+                    {% for error in form.division.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </fieldset>
+              </form>
           </nav>
           <input style="background-color: #4CAF50;
           border: none;
           color: white;
           padding: 16px 32px;
           text-decoration: none;
-          margin: 4px 2px; position: relative; margin-top: 100px; margin-right: 100px;" type="submit" value="Get OTP">
+          margin: 4px 2px; left:100px; position: relative; margin-top: 100px; margin-right: 100px;" type="submit" value="Get OTP">
         </div>
       </div>
     </div>
