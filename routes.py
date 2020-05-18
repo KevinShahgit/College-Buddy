@@ -1,7 +1,7 @@
 from app import app, login, stu, teach, misc
 from app.users import User
 from flask_login import current_user, login_user, logout_user, login_required
-from app.form import SignupForm, LoginForm, CodeForm, Feedback, Teacher
+from app.form import SignupForm, LoginForm, CodeForm, Feedback, Teacher, Notify
 from flask import url_for, redirect, flash, render_template, get_flashed_messages, request
 from datetime import datetime,date
 import math, random, requests, json, jsonify, datetime, bson.objectid, time
@@ -156,21 +156,23 @@ def feedback():
         return redirect(url_for('feedback'))
     return render_template('feedback.html', form = f)
     
-@app.route('/notifications', methods = ["GET", "POST"])
+@app.route('/notify', methods = ["GET", "POST"])
 @login_required
 def notify():
     if current_user.type == 'S':
         return redirect(url_for('stuhome'))
-    f = Feedback()
+    f = Notify()
     l = []
     for i in stu.find({}):
         j = (i.get("_id"), i.get("name") + " - " + i.get("_id"))
         l.append(j)
     f.name.choices = l
+    temp = teach.find_one({"_id": current_user.id})
+    tname = temp.get("name")
     if f.validate_on_submit():
-        requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":2,"email": f.name.data,"subject": f.subject.data, "message": f.message.data}),headers={'Content-Type': 'application/json'})
-        return redirect(url_for('notifications'))
-    return render_template('notify.html', form = f)
+        requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":3,"email": f.name.data,"tname": tname,"subject": f.subject.data, "message": f.message.data}),headers={'Content-Type': 'application/json'})
+        return redirect(url_for('notify'))
+    return render_template('notify.html', form = f, tname = tname)
     
    
 @app.route("/timetable", methods = ["GET", "POST"])

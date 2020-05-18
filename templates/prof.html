@@ -71,7 +71,7 @@
               </a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('notifications') }}">
+              <a class="nav-link" href="{{ url_for('notify') }}">
                 <i class="nc-icon nc-chart-pie-35"></i> 
                 <p>Notification</p>
               </a>
@@ -117,52 +117,55 @@
                       <th>{{ form.subject.label }}</th>
                       <th>{{ form.year.label }}</th>
                       <th>{{ form.branch.label }}</th>
+                      <th>{{ form.division.label }}</th>
+                      <th>{{ dt }}</th>
                     </tr>
-                  {{ form.subject(placeholder = "Select Subject") }}
-                  {% if form.subject.errors %}
-                  <ul class="errors">
-                    {% for error in form.subject.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-
-                  
-                  {{ form.year(placeholder = "Select Year") }}
-                  {% if form.year.errors %}
-                  <ul class="errors">
-                    {% for error in form.year.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                  
-                  {{ form.branch(placeholder = "Select Branch") }}
-                  {% if form.branch.errors %}
-                  <ul class="errors">
-                    {% for error in form.branch.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                  {{ form.division.label }}
-                  {{ form.division(placeholder = "Select Division") }}
-                  {% if form.division.errors %}
-                  <ul class="errors">
-                    {% for error in form.division.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
+                    <tr>
+                      <td>
+                        {{ form.subject(placeholder = "Select Subject") }}
+                        {% if form.subject.errors %}
+                        <ul class="errors">
+                          {% for error in form.subject.errors %}
+                          <li>{{ error }}</li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {{ form.year(placeholder = "Select Subject") }}
+                        {% if form.year.errors %}
+                        <ul class="errors">
+                          {% for error in form.year.errors %}
+                          <li>{{ error }}</li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {{ form.branch(placeholder = "Select Subject") }}
+                        {% if form.branch.errors %}
+                        <ul class="errors">
+                          {% for error in form.branch.errors %}
+                          <li>{{ error }}</li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {{ form.division(placeholder = "Select Subject") }}
+                        {% if form.division.errors %}
+                        <ul class="errors">
+                          {% for error in form.division.errors %}
+                          <li>{{ error }}</li>
+                          {% endfor %}
+                        </ul>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  </table>
                 </fieldset>
               </form>
           </nav>
-          <input style="background-color: #4CAF50;
-          border: none;
-          color: white;
-          padding: 16px 32px;
-          text-decoration: none;
-          margin: 4px 2px; left:200px; position: relative; margin-top: 100px; margin-right: 100px;" type="submit" value="Get OTP">
         </div>
       </div>
     </div>

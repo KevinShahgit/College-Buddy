@@ -58,7 +58,7 @@
                 </a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('notifications') }}">
+                <a class="nav-link" href="{{ url_for('notify') }}">
                   <i class="nc-icon nc-chart-pie-35"></i> 
                   <p>Notification</p>
                 </a>
@@ -100,9 +100,9 @@
                   </div>
                   <div class="card-body">
                       <section id="contact-form">
-                        <h1>Feedback</h1>
+                        <h1>Notification</h1>
                         <div class="container">
-                          <form method="POST" action="/feedback">
+                          <form method="POST" action="/notify">
                             {{ form.csrf_token}}
                             <fieldset class="name" style="font-size:18px; font-weight:100">
                               {{ form.name.label }}
@@ -128,7 +128,7 @@
                             </fieldset>
                             <fieldset class="subject" style="font-size:18px; font-weight:100">
                               {{ form.message.label }}
-                              {{ form.message(placeholder="lname of the email") }}
+                              {{ form.message(placeholder="Notification content") }}
                               {% if form.message.errors %}
                               <ul class="errors">
                                 {% for error in form.message.errors %}

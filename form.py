@@ -40,6 +40,12 @@ class Feedback(FlaskForm):
     subject = StringField('Subject of email(feedback)', validators=[DataRequired()])
     message = TextAreaField('Feedback message', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class Notify(FlaskForm):
+    name = SelectField('Select student', choices=[], coerce=str)
+    subject = StringField('Subject of email(notification)', validators=[DataRequired()])
+    message = TextAreaField('Notification', validators=[DataRequired()])
+    submit = SubmitField('Submit')
     
 class Teacher(FlaskForm):
     subject = SelectField('Select subject', choices=[], validators=[DataRequired()])

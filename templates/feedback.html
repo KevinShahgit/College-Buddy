@@ -140,7 +140,7 @@
                             </fieldset>
                             <fieldset class="subject" style="font-size:18px; font-weight:100">
                               {{ form.message.label }}
-                              {{ form.message(placeholder="lname of the email") }}
+                              {{ form.message(placeholder="Feedback Content") }}
                               {% if form.message.errors %}
                               <ul class="errors">
                                 {% for error in form.message.errors %}

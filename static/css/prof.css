@@ -16,7 +16,45 @@ th{
   text-align: center;
   font-weight: bold;
   font-size: 20px;
+  padding: 2px;
+  width: 250px;
 }
+
+legend {
+  display: block;
+  padding-inline-start: 1px;
+  padding-inline-end: 1px;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  margin: 10px;
+  font-size: 1.5rem;
+  width: auto;
+}
+
+fieldset {
+  display: block;
+  margin-inline-start: 1px;
+  margin-inline-end: 1px;
+  padding-block-start: 0.35em;
+  padding-inline-start: 0.75em;
+  padding-inline-end: 0.75em;
+  padding-block-end: 0.625em;
+  min-inline-size: min-content;
+  border-width: 2px;
+  border-style: groove;
+  border-color: threedface;
+  border-image: initial;
+}
+
+td{
+  text-align: center;
+  font-size: 17px;
+  padding: 2px;
+  width: 250px;
+}
+
 .wrap-drop::after {
 border-color:#695d52 transparent;
 border-style:solid;
