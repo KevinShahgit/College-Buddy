@@ -136,7 +136,12 @@ def profhome():
     form = Teacher()
     form.subject.choices = subjects
     if form.validate_on_submit():
-        return #post request goes here
+        c = generateOTP()
+        f = misc.find_one({"_id": otp})
+        while(c not in f.get("otpset")):
+            c = generateOTP()
+        misc.insert_one({"_id": c})
+        return redirect(url_for(''))
     return render_template('prof.html', form = form, dt = today_date)
     
    

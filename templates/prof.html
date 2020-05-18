@@ -118,7 +118,7 @@
                       <th>{{ form.year.label }}</th>
                       <th>{{ form.branch.label }}</th>
                       <th>{{ form.division.label }}</th>
-                      <th>{{ dt }}</th>
+                      <th id="dt">Date</th>
                     </tr>
                     <tr>
                       <td>
@@ -161,6 +161,10 @@
                         </ul>
                         {% endif %}
                       </td>
+                      <td id="date">{{ dt }}</td>
+                    </tr>
+                    <tr>
+                      <td id="bt" colspan="5"><input type="submit" name="submit" value="Get OTP"></td>
                     </tr>
                   </table>
                 </fieldset>
