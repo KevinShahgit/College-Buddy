@@ -1,17 +1,7 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="../static/css/zalak3.css"
-      type="text/css"
-    />
-    <script src="../static/js/ajax1.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/prof.js"></script>
     <link
       rel="apple-touch-icon"
       sizes="76x76"
@@ -30,25 +20,22 @@
     <link
       href="../static/css/zalak1.css"
       rel="stylesheet"
-      type="text/css"
     />
     <link
       rel="stylesheet"
       href="../static/css/zalak2.css"
-      type="text/css"
     />
     <!-- CSS Files -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../static/css/prof.css" rel="stylesheet" type="text/css" />
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
     <link
       href="../static/css/light-bootstrap-dashboard.css?v=2.0.0 "
       rel="stylesheet"
-      type="text/css"
     />
+    <link href="../static/css/notify.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="../static/css/demo.css" rel="stylesheet" type="text/css" />
+    <link href="../static/css/demo.css" rel="stylesheet" />
   </head>
-
+  
   <body>
     <div class="wrapper">
       <div class="sidebar" data-image="../static/img/sidebar-5.jpg">
@@ -65,19 +52,17 @@
           </div>
           <ul class="nav">
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('profhome') }}">
-                <i class="nc-icon nc-chart-pie-35"></i> 
-                <p>Get OTP</p>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('notifications') }}">
-                <i class="nc-icon nc-chart-pie-35"></i> 
-                <p>Notification</p>
-              </a>
-            </li>
-            
-            
+                <a class="nav-link" href="{{ url_for('profhome') }}">
+                  <i class="nc-icon nc-chart-pie-35"></i> 
+                  <p>Get OTP</p>
+                </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('notifications') }}">
+                  <i class="nc-icon nc-chart-pie-35"></i> 
+                  <p>Notification</p>
+                </a>
+              </li>
           </ul>
         </div>
       </div>
@@ -85,7 +70,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg" color-on-scroll="500">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#"> Attendance </a>
+            <a class="navbar-brand" href="#">Feedback</a>
             <div
               class="collapse navbar-collapse justify-content-end"
               id="navigation"
@@ -107,66 +92,69 @@
         </nav>
         <!-- End Navbar -->
         <div class="content">
-            <nav>
-              <form id="contact" name="contact" method="POST" action="">
-                {{ form.csrf_token}}
-                <fieldset class="subject">
-                  <legend>Get OTP</legend>
-                  <table border="0">
-                    <tr>
-                      <th>{{ form.subject.label }}</th>
-                      <th>{{ form.year.label }}</th>
-                      <th>{{ form.branch.label }}</th>
-                    </tr>
-                  {{ form.subject(placeholder = "Select Subject") }}
-                  {% if form.subject.errors %}
-                  <ul class="errors">
-                    {% for error in form.subject.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-
-                  
-                  {{ form.year(placeholder = "Select Year") }}
-                  {% if form.year.errors %}
-                  <ul class="errors">
-                    {% for error in form.year.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                  
-                  {{ form.branch(placeholder = "Select Branch") }}
-                  {% if form.branch.errors %}
-                  <ul class="errors">
-                    {% for error in form.branch.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                  {{ form.division.label }}
-                  {{ form.division(placeholder = "Select Division") }}
-                  {% if form.division.errors %}
-                  <ul class="errors">
-                    {% for error in form.division.errors %}
-                    <li>{{ error }}</li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                </fieldset>
-              </form>
-          </nav>
-          <input style="background-color: #4CAF50;
-          border: none;
-          color: white;
-          padding: 16px 32px;
-          text-decoration: none;
-          margin: 4px 2px; left:200px; position: relative; margin-top: 100px; margin-right: 100px;" type="submit" value="Get OTP">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-header">
+                  </div>
+                  <div class="card-body">
+                      <section id="contact-form">
+                        <h1>Feedback</h1>
+                        <div class="container">
+                          <form method="POST" action="/feedback">
+                            {{ form.csrf_token}}
+                            <fieldset class="name" style="font-size:18px; font-weight:100">
+                              {{ form.name.label }}
+                              {{ form.name }}
+                              {% if form.name.errors %}
+                              <ul class="errors">
+                                {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <fieldset class="subject" style="font-size:18px; font-weight:100">
+                              {{ form.subject.label }}
+                              {{ form.subject(placeholder="Subject of the email") }}
+                              {% if form.subject.errors %}
+                              <ul class="errors">
+                                {% for error in form.subject.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <fieldset class="subject" style="font-size:18px; font-weight:100">
+                              {{ form.message.label }}
+                              {{ form.message(placeholder="lname of the email") }}
+                              {% if form.message.errors %}
+                              <ul class="errors">
+                                {% for error in form.message.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                            </fieldset>
+                            <div class="submit-button">
+                              {{ form.submit }}
+                            </div>
+                          </form>
+                        </div>
+                      </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </body>
+  
+  <!-- Jquery Plugin -->
+  <script src="../static/js/jquery.min.js"></script>
   <!--   Core JS Files   -->
   <script
     src="../static/js/core/jquery.3.2.1.min.js"
@@ -181,8 +169,8 @@
   <script src="../static/js/plugins/bootstrap-switch.js"></script>
   <!--  Google Maps Plugin    -->
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
     type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
   ></script>
   <!--  Chartist Plugin  -->
   <script src="../static/js/plugins/chartist.min.js"></script>
@@ -195,10 +183,4 @@
   ></script>
   <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
   <script src="../static/js/demo.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-    });
-  </script>
 </html>

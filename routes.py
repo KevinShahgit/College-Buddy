@@ -143,6 +143,8 @@ def profhome():
 @app.route('/feedback', methods = ["GET", "POST"])
 @login_required
 def feedback():
+    if current_user.type == 'T':
+        return redirect(url_for('profhome'))
     f = Feedback()
     l = []
     for i in teach.find({}):
@@ -153,6 +155,22 @@ def feedback():
         requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":2,"email": f.name.data,"subject": f.subject.data, "message": f.message.data}),headers={'Content-Type': 'application/json'})
         return redirect(url_for('feedback'))
     return render_template('feedback.html', form = f)
+    
+@app.route('/notifications', methods = ["GET", "POST"])
+@login_required
+def notify():
+    if current_user.type == 'S':
+        return redirect(url_for('stuhome'))
+    f = Feedback()
+    l = []
+    for i in stu.find({}):
+        j = (i.get("_id"), i.get("name") + " - " + i.get("_id"))
+        l.append(j)
+    f.name.choices = l
+    if f.validate_on_submit():
+        requests.post("https://us-central1-dbcheck-ff691.cloudfunctions.net/sendMail", data=json.dumps({"check":2,"email": f.name.data,"subject": f.subject.data, "message": f.message.data}),headers={'Content-Type': 'application/json'})
+        return redirect(url_for('notifications'))
+    return render_template('notify.html', form = f)
     
    
 @app.route("/timetable", methods = ["GET", "POST"])
