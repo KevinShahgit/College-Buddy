@@ -166,7 +166,7 @@ demo = {
     },
 
     initDashboardPageCharts: function() {
-
+        console.log(data)
         var dataPreferences = {
             series: [
                 [25, 30, 20, 25]
@@ -183,15 +183,17 @@ demo = {
                 showGrid: false
             }
         };
-
-        Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
-
-        Chartist.Pie('#chartPreferences', {
-            labels: ['53%', '36%', '11%'],
-            series: [53, 36, 11]
-        });
-
-
+        
+        for(var i = 0 ; i < test.length ; i++)
+        {
+            Chartist.Pie('#chartPreferences' + i.toString(), dataPreferences, optionsPreferences);
+            
+            Chartist.Pie('#chartPreferences' + i.toString(), {
+                labels: [test[i][4], (100 - test[i][4].substring(0, test[i][4].length - 1).toString()) + '%'],
+                series: [parseFloat(test[i][4].substring(0, test[i][4].length - 1)), 100.0 - parseFloat(test[i][4].substring(0, test[i][4].length - 1))],
+            });    
+        }
+    
         var dataSales = {
             labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
             series: [

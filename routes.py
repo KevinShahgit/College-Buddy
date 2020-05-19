@@ -112,7 +112,7 @@ def stuhome():
         if(k[0] == "_id"):
             continue
         l1 = []
-        l1.append(k[0])
+        l1.append(str(k[0]))  
         z = i.get(k[0])
         l1.append(z.count('1'))
         l1.append(z.count('0'))
@@ -120,7 +120,7 @@ def stuhome():
         if(l1[-1] == 0):
             l1.append('0%')
         else:
-            l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + "%")
+            l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + '%')
         l.append(l1)
     return render_template('attendance.html', data = l)
     
@@ -137,10 +137,15 @@ def profhome():
     form.subject.choices = subjects
     if form.validate_on_submit():
         c = generateOTP()
-        f = misc.find_one({"_id": otp})
+        f = misc.find_one({"_id": "otp"})
         while(c not in f.get("otpset")):
             c = generateOTP()
-        misc.insert_one({"_id": c})
+        misc.insert_one({"_id": c}) # What does this statement do?
+        subject = f.subject.data
+        year = f.year.data
+        branch = f.branch.data
+        division = f.division.data
+        
         return redirect(url_for(''))
     return render_template('prof.html', form = form, dt = today_date)
     
@@ -189,6 +194,11 @@ def timetable():
     branch = temp.get("branch")
     division = temp.get("division")
     return render_template('time-table.html', d = division, b = branch)
+    
+@app.route('/markatt', methods = ["GET", "POST"])
+@login_required
+def markatt():
+    pass
     
 @app.route('/stuatt', methods = ["GET", "POST"])
 @login_required

@@ -11,6 +11,7 @@
     />
     <script src="../static/js/ajax1.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
+    <script type="text/javascript">var test = {{ data | tojson }};</script>
     <link
       rel="apple-touch-icon"
       sizes="76x76"
@@ -147,21 +148,20 @@
             </table>
           </div>
             <div class="row">
+              {% for i in range(data | length) %}
               <div class="col-md-4">
                 <div class="card">
                   <div class="card-header">
-                    <h4 class="card-title">Email Statistics</h4>
-                    <p class="card-category">Last Campaign Performance</p>
+                    <h4 class="card-title">Attendance - {{ data[i][0] }}</h4>
                   </div>
                   <div class="card-body">
                     <div
-                      id="chartPreferences"
+                      id="chartPreferences{{ i }}"
                       class="ct-chart ct-perfect-fourth"
                     ></div>
                     <div class="legend">
-                      <i class="fa fa-circle text-info"></i> Open
-                      <i class="fa fa-circle text-danger"></i> Bounce
-                      <i class="fa fa-circle text-warning"></i> Unsubscribe
+                      <i class="fa fa-circle text-info"></i> Present
+                      <i class="fa fa-circle text-danger"></i> Absent
                     </div>
                     <hr />
                     <div class="stats">
@@ -170,6 +170,7 @@
                   </div>
                 </div>
               </div>
+              {% endfor %}
               <div class="col-md-8"></div>
             </div>
             <div class="row">

@@ -53,3 +53,8 @@ class Teacher(FlaskForm):
     branch = SelectField('Select branch', choices=[("Comps", "COMP")], validators=[DataRequired()])
     division = SelectField('Select division', choices=[("A", "A"), ("B", "B")], validators=[DataRequired()])
     submit = SubmitField('Get OTP')
+
+class OTPform(FlaskForm):
+    code = IntegerField('Enter OTP', validators = [DataRequired()])
+    submit = SubmitField('Submit')
+    
