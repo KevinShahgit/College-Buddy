@@ -70,7 +70,7 @@
                 <p>Get OTP</p>
               </a>
             </li>
-            <li class="nav-item active">
+            <li>
               <a class="nav-link" href="{{ url_for('notify') }}">
                 <i class="nc-icon nc-chart-pie-35"></i> 
                 <p>Notification</p>
@@ -108,7 +108,7 @@
         <!-- End Navbar -->
         <div class="content">
             <nav>
-              <form id="contact" name="contact" method="POST" action="">
+              <form id="details" name="details" method="POST" action="">
                 {{ form.csrf_token}}
                 <fieldset class="subject">
                   <legend>Get OTP</legend>

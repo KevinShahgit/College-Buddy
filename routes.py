@@ -144,6 +144,19 @@ def stuhome():
             l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + '%')
         l.append(l1)
     #Aggregate
+    agg = ['AGGREGATE']
+    att = 0
+    miss = 0
+    tot = 0
+    for x in l:
+        att += x[1]
+        miss += x[2]
+        tot += x[3]
+    agg.append(att)
+    agg.append(miss)
+    agg.append(tot)
+    agg.append(str(round((att/tot) * 100, 2)) + '%')
+    l.append(agg)
     return render_template('attendance.html', data = l, bar = bar)
     
 @app.route('/profhome', methods = ["GET", "POST"])
@@ -156,7 +169,7 @@ def profhome():
     today = date.today()
     today_date = today.strftime("%d-%m-%Y")
     form = Teacher()
-    form.subject.choices = subjects
+    form.subject.choices = [(subj, subj) for subj in subjects]
     if form.validate_on_submit():
         c = generateOTP()
         f = misc.find_one({"_id": "otp"})
@@ -168,15 +181,12 @@ def profhome():
                 l.append(0)
         z = misc.find_one({"_id": "date"})
         if today_date not in z.get("datelist"):
-            misc.update_one({"_id":"date"}, {"$set": {"datelist": z.get("datelist").append(today_date)}})
+            z.get("datelist").append(today_date)
+            misc.update_one({"_id":"date"}, {"$set": {"datelist":z.get("datelist")}})
         n = misc.find_one({"_id":form.division.data})
-        n.update_one({"_id":form.division.data}, {"$set":{form.subject.data:n.get(form.subject.data) + 1}})
+        misc.update_one({"_id":form.division.data}, {"$set":{form.subject.data:n.get(form.subject.data) + 1}})
         misc.insert_one({"_id": current_user.id, "code":c, "sub":form.subject.data, "year":form.year.data, "branch":form.branch.data, "division":form.division.data, "stats":l})
-        # subject = f.subject.data
-        # year = f.year.data
-        # branch = f.branch.data
-        # division = f.division.data
-        return redirect(url_for('tatt', p = current_user.id))
+        return redirect(url_for('tatt', p = str(current_user.id)))
     return render_template('prof.html', form = form, dt = today_date)
     
    
@@ -227,7 +237,7 @@ def timetable():
     
 @app.route('/stuatt', methods = ["GET", "POST"])
 @login_required
-def attend(): # Incomplete
+def attend():
     if current_user.type == 'T':
         return redirect(url_for('profhome'))
     f = OTPform()
@@ -236,7 +246,18 @@ def attend(): # Incomplete
 @app.route('/<p>', methods = ["GET", "POST"]) 
 @login_required
 def tatt(p):
+    #"_id": current_user.id, "code":c, "sub":form.subject.data, "year":form.year.data, "branch":form.branch.data
+    # "division":form.division.data, "stats":l
+    if current_user.type == 'S':
+        return redirect(url_for('stuhome'))
+    elif current_user.id != p:
+        return redirect(url_for('profhome'))
     temp = misc.find_one({"_id": p})
+    l = []
+    for i in stu.find({}):
+        if i.get("division") == temp.get("division"):
+            l.append([i.get("roll"), i.get("name")])
+    return render_template('stulist.html', l = l)
     
 
 @login.user_loader

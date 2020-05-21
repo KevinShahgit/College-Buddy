@@ -31,7 +31,7 @@
       href="../static/css/light-bootstrap-dashboard.css?v=2.0.0 "
       rel="stylesheet"
     />
-    <link href="../static/css/notify.css" rel="stylesheet" />
+    <link href="../static/css/feedback.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../static/css/demo.css" rel="stylesheet" />
   </head>
@@ -52,17 +52,29 @@
           </div>
           <ul class="nav">
             <li>
-                <a class="nav-link" href="{{ url_for('profhome') }}">
-                  <i class="nc-icon nc-chart-pie-35"></i> 
-                  <p>Get OTP</p>
-                </a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('notify') }}">
-                  <i class="nc-icon nc-chart-pie-35"></i> 
-                  <p>Notification</p>
-                </a>
-              </li>
+              <a class="nav-link" href="{{ url_for('stuhome') }}">
+                <i class="nc-icon nc-chart-pie-35"></i>
+                <p>Attendance</p>
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('feedback') }}">
+                <i class="nc-icon nc-circle-09"></i>
+                <p>Feedback</p>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="{{ url_for('timetable') }}">
+                <i class="nc-icon nc-notes"></i>
+                <p>Time Table</p>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="{{ url_for('attend') }}">
+                <i class="nc-icon nc-notes"></i>
+                <p>Mark Attendance</p>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -100,43 +112,21 @@
                   </div>
                   <div class="card-body">
                       <section id="contact-form">
-                        <h1>Notification</h1>
+                        <h1>Mark Attendance</h1>
                         <div class="container">
-                          <form method="POST" action="/notify">
+                          <form method="POST" action="/markatt">
                             {{ form.csrf_token}}
-                            <fieldset class="name" style="font-size:18px; font-weight:100">
-                              {{ form.name.label }}
-                              {{ form.name }}
-                              {% if form.name.errors %}
-                              <ul class="errors">
-                                {% for error in form.name.errors %}
-                                <li>{{ error }}</li>
-                                {% endfor %}
-                              </ul>
-                              {% endif %}
-                            </fieldset>
-                            <fieldset class="subject" style="font-size:18px; font-weight:100">
-                              {{ form.subject.label }}
-                              {{ form.subject(placeholder="Subject of the email") }}
-                              {% if form.subject.errors %}
-                              <ul class="errors">
-                                {% for error in form.subject.errors %}
-                                <li>{{ error }}</li>
-                                {% endfor %}
-                              </ul>
-                              {% endif %}
-                            </fieldset>
-                            <fieldset class="subject" style="font-size:18px; font-weight:100">
-                              {{ form.message.label }}
-                              {{ form.message(placeholder="Notification content") }}
-                              {% if form.message.errors %}
-                              <ul class="errors">
-                                {% for error in form.message.errors %}
-                                <li>{{ error }}</li>
-                                {% endfor %}
-                              </ul>
-                              {% endif %}
-                            </fieldset>
+                            <fieldset class="code">
+                                {{ form.code.label }}
+                                {{ form.code }}
+                                {% if form.code.errors %}
+                                  <ul class="errors">
+                                    {% for error in form.code.errors %}
+                                      <li>{{ error }}</li>
+                                    {% endfor %}
+                                  </ul>
+                                {% endif %}
+                              </fieldset>
                             <div class="submit-button">
                               {{ form.submit }}
                             </div>
