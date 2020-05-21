@@ -166,7 +166,6 @@ demo = {
     // },
 
     initDashboardPageCharts: function() {
-        console.log(data)
         var dataPreferences = {
             series: [
                 [20, 20, 20, 20, 20]
@@ -263,10 +262,10 @@ demo = {
             miss[i] = bar1[i][2];
         }
         var data = {
-            labels: lab,
+            labels: (lab.reverse()),
             series: [
-                [att],
-                [miss]
+                (att.reverse()),
+                (miss.reverse())
             ]
         };
 

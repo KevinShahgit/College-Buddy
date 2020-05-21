@@ -110,16 +110,22 @@ def stuhome():
     bar = []
     #bar is list of lists, element:[date, attended, missed]
     for a in range(5):
-        x = z1.get("datelist")[-1 - a]
+        if(len(z1.get("datelist")) == 0):
+            x = (date.today() - datetime.timedelta(days=a)).strftime("%d-%m-%Y")
+        elif(a >= len(z1.get("datelist"))):
+            x = (datetime.strptime(z1.get("datelist")[0], "%d-%m-%Y") - datetime.timedelta(days=(a - len(z1.get("datelist")) + 1))).strftime("%d-%m-%Y")
+        else:
+            x = z1.get("datelist")[-1 - a]
         mi, at = 0, 0
         for k in j.items():
             if(k[0] == "_id"):
                 continue
             z = i.get(k[0])
-            if(z[-1 - a] == 0):
-                mi += 1
-            elif(z[-1 - a] == 1):
-                at += 1
+            if z:
+                if(z[-1 - a] == 0):
+                    mi += 1
+                elif(z[-1 - a] == 1):
+                    at += 1
         bar.append([x, at, mi])
     #[subject, attended, missed, total, percentage]
     l = []
@@ -220,7 +226,7 @@ def timetable():
     
 @app.route('/stuatt', methods = ["GET", "POST"])
 @login_required
-def attend():
+def attend(): # Incomplete
     if current_user.type == 'T':
         return redirect(url_for('profhome'))
     f = OTPform()
