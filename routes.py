@@ -1,10 +1,11 @@
 from app import app, login, stu, teach, misc
 from app.users import User
 from flask_login import current_user, login_user, logout_user, login_required
-from app.form import SignupForm, LoginForm, CodeForm, Feedback, Teacher, Notify
+from app.form import SignupForm, LoginForm, CodeForm, Feedback, Teacher, Notify, OTPform
 from flask import url_for, redirect, flash, render_template, get_flashed_messages, request
 from datetime import datetime,date
 import math, random, requests, json, jsonify, datetime, bson.objectid, time
+
 
 def generateOTP() :   # 4 digit OTP
     digits = "0123456789"
@@ -72,7 +73,6 @@ def sign():
                 }
                 x = misc.insert_one(temp)
                 return redirect("http://localhost:5000/verify/" + str(x.inserted_id))
-            # flash('A user already exists with that email address')
         flash('A user already exists with that email address')
     return render_template('signup.html',
                            title = 'Create an Account.',
@@ -106,6 +106,21 @@ def stuhome():
         return redirect(url_for('profhome'))
     i = stu.find_one({"_id": current_user.id})
     j = misc.find_one({"_id": i.get("division")})
+    z1 = misc.find_one({"_id": "date"})
+    bar = []
+    #bar is list of lists, element:[date, attended, missed]
+    for a in range(5):
+        x = z1.get("datelist")[-1 - a]
+        mi, at = 0, 0
+        for k in j.items():
+            if(k[0] == "_id"):
+                continue
+            z = i.get(k[0])
+            if(z[-1 - a] == 0):
+                mi += 1
+            elif(z[-1 - a] == 1):
+                at += 1
+        bar.append([x, at, mi])
     #[subject, attended, missed, total, percentage]
     l = []
     for k in j.items():
@@ -114,15 +129,15 @@ def stuhome():
         l1 = []
         l1.append(str(k[0]))  
         z = i.get(k[0])
-        l1.append(z.count('1'))
-        l1.append(z.count('0'))
+        l1.append(z.count(1))
+        l1.append(z.count(0))
         l1.append(int(k[1]))
         if(l1[-1] == 0):
             l1.append('0%')
         else:
             l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + '%')
         l.append(l1)
-    return render_template('attendance.html', data = l)
+    return render_template('attendance.html', data = l, bar = bar)
     
 @app.route('/profhome', methods = ["GET", "POST"])
 @login_required
@@ -138,15 +153,23 @@ def profhome():
     if form.validate_on_submit():
         c = generateOTP()
         f = misc.find_one({"_id": "otp"})
-        while(c not in f.get("otpset")):
+        while(c in f.get("otpset")):
             c = generateOTP()
-        misc.insert_one({"_id": c}) # What does this statement do?
-        subject = f.subject.data
-        year = f.year.data
-        branch = f.branch.data
-        division = f.division.data
-        
-        return redirect(url_for(''))
+        l = []
+        for i in stu.find({}):
+            if i.get("division") == form.division.data:
+                l.append(0)
+        z = misc.find_one({"_id": "date"})
+        if today_date not in z.get("datelist"):
+            misc.update_one({"_id":"date"}, {"$set": {"datelist": z.get("datelist").append(today_date)}})
+        n = misc.find_one({"_id":form.division.data})
+        n.update_one({"_id":form.division.data}, {"$set":{form.subject.data:n.get(form.subject.data) + 1}})
+        misc.insert_one({"_id": current_user.id, "code":c, "sub":form.subject.data, "year":form.year.data, "branch":form.branch.data, "division":form.division.data, "stats":l})
+        # subject = f.subject.data
+        # year = f.year.data
+        # branch = f.branch.data
+        # division = f.division.data
+        return redirect(url_for('tatt', p = current_user.id))
     return render_template('prof.html', form = form, dt = today_date)
     
    
@@ -195,20 +218,18 @@ def timetable():
     division = temp.get("division")
     return render_template('time-table.html', d = division, b = branch)
     
-@app.route('/markatt', methods = ["GET", "POST"])
-@login_required
-def markatt():
-    pass
-    
 @app.route('/stuatt', methods = ["GET", "POST"])
 @login_required
 def attend():
-    pass
+    if current_user.type == 'T':
+        return redirect(url_for('profhome'))
+    f = OTPform()
+    return render_template('stuatt.html', form = f)
 
-@app.route('/profatt', methods = ["GET", "POST"]) 
+@app.route('/<p>', methods = ["GET", "POST"]) 
 @login_required
-def tatt():
-    pass
+def tatt(p):
+    temp = misc.find_one({"_id": p})
     
 
 @login.user_loader

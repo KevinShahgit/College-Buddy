@@ -136,40 +136,40 @@ demo = {
         });
     },
 
-    initDocumentationCharts: function() {
-        /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
+    // initDocumentationCharts: function() {
+    //     /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
-        dataDailySalesChart = {
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-            series: [
-                [12, 17, 7, 17, 23, 18, 38]
-            ]
-        };
+    //     dataDailySalesChart = {
+    //         labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    //         series: [
+    //             [12, 17, 7, 17, 23, 18, 38]
+    //         ]
+    //     };
 
-        optionsDailySalesChart = {
-            lineSmooth: Chartist.Interpolation.cardinal({
-                tension: 0
-            }),
-            low: 0,
-            high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-            chartPadding: {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-        }
+    //     optionsDailySalesChart = {
+    //         lineSmooth: Chartist.Interpolation.cardinal({
+    //             tension: 0
+    //         }),
+    //         low: 0,
+    //         high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    //         chartPadding: {
+    //             top: 0,
+    //             right: 0,
+    //             bottom: 0,
+    //             left: 0
+    //         },
+    //     }
 
-        var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+    //     var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-        // lbd.startAnimationForLineChart(dailySalesChart);
-    },
+    //     // lbd.startAnimationForLineChart(dailySalesChart);
+    // },
 
     initDashboardPageCharts: function() {
         console.log(data)
         var dataPreferences = {
             series: [
-                [25, 30, 20, 25]
+                [20, 20, 20, 20, 20]
             ]
         };
 
@@ -191,17 +191,17 @@ demo = {
             Chartist.Pie('#chartPreferences' + i.toString(), {
                 labels: [test[i][4], (100 - test[i][4].substring(0, test[i][4].length - 1).toString()) + '%'],
                 series: [parseFloat(test[i][4].substring(0, test[i][4].length - 1)), 100.0 - parseFloat(test[i][4].substring(0, test[i][4].length - 1))],
-            });    
+            });
         }
     
-        var dataSales = {
-            labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
-            series: [
-                [287, 385, 490, 492, 554, 586, 698, 695, 752, 788, 846, 944],
-                [67, 152, 143, 240, 287, 335, 435, 437, 539, 542, 544, 647],
-                [23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509]
-            ]
-        };
+        // var dataSales = {
+        //     labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
+        //     series: [
+        //         [287, 385, 490, 492, 554, 586, 698, 695, 752, 788, 846, 944],
+        //         [67, 152, 143, 240, 287, 335, 435, 437, 539, 542, 544, 647],
+        //         [23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509]
+        //     ]
+        // };
 
         // var optionsSales = {
         //   lineSmooth: false,
@@ -223,42 +223,50 @@ demo = {
         //   showPoint: true,
         //   fullWidth: true
         // };
-        var optionsSales = {
-            lineSmooth: false,
-            low: 0,
-            high: 800,
-            showArea: true,
-            height: "245px",
-            axisX: {
-                showGrid: false,
-            },
-            lineSmooth: Chartist.Interpolation.simple({
-                divisor: 3
-            }),
-            showLine: false,
-            showPoint: false,
-            fullWidth: false
-        };
+        // var optionsSales = {
+        //     lineSmooth: false,
+        //     low: 0,
+        //     high: 800,
+        //     showArea: true,
+        //     height: "245px",
+        //     axisX: {
+        //         showGrid: false,
+        //     },
+        //     lineSmooth: Chartist.Interpolation.simple({
+        //         divisor: 3
+        //     }),
+        //     showLine: false,
+        //     showPoint: false,
+        //     fullWidth: false
+        // };
 
-        var responsiveSales = [
-            ['screen and (max-width: 640px)', {
-                axisX: {
-                    labelInterpolationFnc: function(value) {
-                        return value[0];
-                    }
-                }
-            }]
-        ];
+        // var responsiveSales = [
+        //     ['screen and (max-width: 640px)', {
+        //         axisX: {
+        //             labelInterpolationFnc: function(value) {
+        //                 return value[0];
+        //             }
+        //         }
+        //     }]
+        // ];
 
-        var chartHours = Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
+        // var chartHours = Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
 
         // lbd.startAnimationForLineChart(chartHours);
-
+        var lab = [];
+        var att = [];
+        var miss = [];
+        for(var i = 0 ; i < bar1.length ; i++)
+        {
+            lab[i] = bar1[i][0];
+            att[i] = bar1[i][1];
+            miss[i] = bar1[i][2];
+        }
         var data = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: lab,
             series: [
-                [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-                [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
+                [att],
+                [miss]
             ]
         };
 
