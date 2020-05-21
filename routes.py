@@ -143,6 +143,7 @@ def stuhome():
         else:
             l1.append(str(round((l1[1] / l1[-1]) * 100, 2)) + '%')
         l.append(l1)
+    #Aggregate
     return render_template('attendance.html', data = l, bar = bar)
     
 @app.route('/profhome', methods = ["GET", "POST"])
